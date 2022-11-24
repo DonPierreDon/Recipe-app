@@ -1,7 +1,7 @@
 """
 Views for the recipe APIs.
 """
-from drf_spectacular.utils import(
+from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
     OpenApiParameter,
@@ -12,6 +12,7 @@ from rest_framework import (
     mixins,
     status,
 )
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
@@ -31,12 +32,12 @@ from recipe import serializers
             OpenApiParameter(
                 'tags',
                 OpenApiTypes.STR,
-                description='Comma separated list of tags IDs to filter'
+                description='Comma separated list of tag IDs to filter',
             ),
             OpenApiParameter(
                 'ingredients',
                 OpenApiTypes.STR,
-                description='Comma separated lis of ingredients IDs to filter',
+                description='Comma separated lis of ingredient IDs to filter',
             )
         ]
     )
@@ -128,7 +129,7 @@ class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
         )
         queryset = self.queryset
         if assigned_only:
-            queryset = queryset.filter(recipe_isnull=False)
+            queryset = queryset.filter(recipe__isnull=False)
         return queryset.filter(
             user=self.request.user
             ).order_by('-name').distinct()
